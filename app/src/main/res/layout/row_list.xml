@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:src="@drawable/app_icon"
+        android:id="@+id/img"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:orientation="vertical">
+
+        <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+            android:id="@+id/name"
+            style="@style/Gotham_Black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="name of place"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+            android:id="@+id/rating"
+            style="@style/Gotham_Book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Rating"
+            android:textColor="@color/black" />
+
+
+        <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+            android:id="@+id/address"
+            style="@style/Gotham_Book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="address of place"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "939125804713",
+    "firebase_url": "https://mylocator-8304a.firebaseio.com",
+    "project_id": "mylocator-8304a",
+    "storage_bucket": "mylocator-8304a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939125804713:android:8baeeb2f64af25c2",
+        "android_client_info": {
+          "package_name": "com.example.shadabazamfarooqui.mylocator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "939125804713-3d3q3dimesb6t5iorku7q17fjr8dj7jm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shadabazamfarooqui.mylocator",
+            "certificate_hash": "af8363d4da47604bad85b61e04551814c985631a"
+          }
+        },
+        {
+          "client_id": "939125804713-i9f7hmq2eaa3lqaoo6gt57r2vv58sp7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa0o3Xab110JiU59iCF44FFcmgJs94bzg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "939125804713-i9f7hmq2eaa3lqaoo6gt57r2vv58sp7h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
