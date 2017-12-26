@@ -5,18 +5,23 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.shadabazamfarooqui.mylocator.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -50,8 +55,8 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
         super.onCreate(savedInstanceState);
         //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         setContentView(R.layout.activity_add_mosque);
-
         ButterKnife.bind(this);
+        initActionbar();
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -79,6 +84,25 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                 dialog();
             }
         });
+    }
+
+    private void initActionbar() {
+        ActionBar actionBar = getSupportActionBar();
+        View viewActionBar = getLayoutInflater().inflate(R.layout.action_bar_tittle_text_layout, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#009DE0")));
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(viewActionBar, params);
+        TextView actionbarTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        actionbarTitle.setText("ADD MASQUE");
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
     }
 
     void dialog() {

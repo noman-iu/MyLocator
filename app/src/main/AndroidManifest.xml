@@ -41,13 +41,13 @@
         <activity
             android:name=".activity.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
+
         <activity
             android:name=".activity.AddMosqueActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
+            android:parentActivityName=".activity.HomeActivity">
         </activity>
+
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"

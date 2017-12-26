@@ -126,8 +126,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:padding="10dp"
                         android:minHeight="50dp"
+                        android:padding="10dp"
                         android:textSize="16sp" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -160,8 +160,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:padding="10dp"
                         android:minHeight="50dp"
+                        android:padding="10dp"
                         android:textSize="16sp" />
 
                 </android.support.design.widget.TextInputLayout>
