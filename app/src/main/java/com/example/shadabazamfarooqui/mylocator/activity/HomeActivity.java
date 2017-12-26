@@ -1,7 +1,10 @@
 package com.example.shadabazamfarooqui.mylocator.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -12,6 +15,7 @@ import com.example.shadabazamfarooqui.mylocator.activity.abstract_activity.Map;
 import com.example.shadabazamfarooqui.mylocator.activity.abstract_activity.Navigation;
 import com.example.shadabazamfarooqui.mylocator.adapter.MosqueAdapter;
 import com.example.shadabazamfarooqui.mylocator.network.request.GetRequest;
+import com.example.shadabazamfarooqui.mylocator.utils.Networking;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -27,6 +31,8 @@ import retrofit2.Response;
 
 public class HomeActivity extends Navigation {
 
+    @Bind(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
     @Bind(R.id.mapLayout)
     LinearLayout mapLayout;
     @Bind(R.id.listLayout)
@@ -43,9 +49,18 @@ public class HomeActivity extends Navigation {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         context = this;
-        Map.boolForMapList=true;
-        onCreateNavigation();
-        onCreateMap(mosqueList);
+        if (Networking.isNetworkAvailable(this)){
+            progressDialog=new ProgressDialog(this);
+            progressDialog.setMessage("Loading...");
+//            progressDialog.show();
+            checkGps(this);
+            Map.boolForMapList=true;
+            onCreateNavigation();
+            onCreateMap(mosqueList);
+        }else {
+            Snackbar.make(coordinatorLayout,"Check your internet connection",Snackbar.LENGTH_LONG).show();
+        }
+
 
     }
 
@@ -72,6 +87,7 @@ public class HomeActivity extends Navigation {
             return true;
         }
         if (id == R.id.action_refresh) {
+            checkGps(this);
             Map.boolForMapList=true;
             return true;
         }

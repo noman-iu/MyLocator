@@ -1,12 +1,18 @@
 package com.example.shadabazamfarooqui.mylocator.activity.abstract_activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -59,6 +65,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback,
     LocationRequest mLocationRequest;
     public static Boolean boolForMapList=true;
     ListView mosqueList;
+    public ProgressDialog progressDialog;
 
     public void onCreateMap(ListView mosqueList){
         this.mosqueList=mosqueList;
@@ -183,6 +190,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback,
         Log.d("onLocationChanged", "Exit");
 
         if (Map.boolForMapList){
+
             handleMosqueRequest("mosque");
             Map.boolForMapList=false;
         }
@@ -275,6 +283,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback,
             public void onResponse(Call<GetRequest> call, Response<GetRequest> response) {
                 try {
                     mMap.clear();
+                    progressDialog.dismiss();
                     // This loop will go through all the results and add marker on each location.
                     for (int i = 0; i < response.body().getResults().size(); i++) {
                         Double lat = response.body().getResults().get(i).getGeometry().getLocation().getLat();
@@ -310,5 +319,36 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback,
         });
     }
 
+    public void checkGps(Context context){
+        progressDialog.show();
+        LocationManager locationManager = (LocationManager) context
+                .getSystemService(LOCATION_SERVICE);
+
+        // getting GPS status
+        boolean checkGPS = locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!checkGPS){
+            progressDialog.dismiss();
+            showSettingsAlert(context);
+        }
+    }
+
+    public void showSettingsAlert(final Context context) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle("GPS Not Enabled");
+        alertDialog.setMessage("Do you wants to turn On GPS?");
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                context.startActivity(intent);
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
 
 }
