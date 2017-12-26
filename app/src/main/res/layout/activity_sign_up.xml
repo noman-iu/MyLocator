@@ -18,6 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:visibility="visible"
+            android:id="@+id/register_layout"
             android:orientation="vertical">
 
 
@@ -196,6 +198,29 @@
 
     </ScrollView>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/otp_layout">
+
+        <com.example.shadabazamfarooqui.mylocator.utils.BuzzEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/enter_otp_edit_text"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/submit_otp_btn"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/background"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
 
