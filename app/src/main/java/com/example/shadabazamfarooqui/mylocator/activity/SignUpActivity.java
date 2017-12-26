@@ -164,8 +164,11 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError == null) {
                     progressDialog.dismiss();
-                   // startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-
+                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                    intent.putExtra("mobile",mobile.getText().toString());
+                    intent.putExtra("password",password.getText().toString());
+                    startActivity(intent);
+                    finish();
                 } else {
                     progressDialog.dismiss();
                 }
