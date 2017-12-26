@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -12,21 +13,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shadabazamfarooqui.mylocator.R;
+import com.example.shadabazamfarooqui.mylocator.activity.sign_up_.ParameterConstantsDummy;
 import com.example.shadabazamfarooqui.mylocator.validation.Validation;
 import com.example.shadabazamfarooqui.mylocator.bean.ReferenceWrapper;
 import com.example.shadabazamfarooqui.mylocator.bean.UserBean;
 import com.example.shadabazamfarooqui.mylocator.utils.ParameterConstants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,9 +72,26 @@ public class SignUpActivity extends AppCompatActivity {
     TextInputLayout inputLayoutPassword;
     @Bind(R.id.inputLayoutConfirmPassword)
     TextInputLayout inputLayoutConfirmPassword;
+    @Bind(R.id.enter_otp_edit_text)
+    EditText otpEditText;
+    @Bind(R.id.submit_otp_btn)
+    Button submitOptBtn;
+
+    @Bind(R.id.otp_layout)
+    LinearLayout otpLayout;
+    @Bind(R.id.register_layout)
+    LinearLayout registerLayout;
+
     ProgressDialog progressDialog;
     ReferenceWrapper referenceWrapper;
     DatabaseReference databaseReference;
+    private FirebaseAuth mAuth;
+    // [END declare_auth]
+
+    String mVerificationId;
+    PhoneAuthProvider.ForceResendingToken mResendToken;
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    UserBean userBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +110,97 @@ public class SignUpActivity extends AppCompatActivity {
                 fieldValidation();
             }
         });
+
+
+        mAuth = FirebaseAuth.getInstance();
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                Toast.makeText(SignUpActivity.this, "verification done line No :153", Toast.LENGTH_LONG).show();
+
+               /* databaseReference.child(ParameterConstantsDummy.PROFILE).child(userBean.getMobile()).setValue(userBean, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if (databaseError == null) {
+                            progressDialog.dismiss();
+                            referenceWrapper.setUserBean(userBean);
+                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                            intent.putExtra("mobPass", userBean.getMobile() + " " + userBean.getPassword());
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        } else {
+                            progressDialog.dismiss();
+                        }
+                    }
+                });*/
+
+                databaseReference.child(mobile.getText().toString()).setValue(userBean, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if (databaseError == null) {
+                            progressDialog.dismiss();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            intent.putExtra("mobile", mobile.getText().toString());
+                            intent.putExtra("password", password.getText().toString());
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                Toast.makeText(SignUpActivity.this, "verification fail", Toast.LENGTH_LONG).show();
+                if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    // Invalid request
+                    // [START_EXCLUDE]
+                    Toast.makeText(SignUpActivity.this, "invalid mob no", Toast.LENGTH_LONG).show();
+                    // [END_EXCLUDE]
+                } else if (e instanceof FirebaseTooManyRequestsException) {
+                    // The SMS quota for the project has been exceeded
+                    // [START_EXCLUDE]
+                    Toast.makeText(SignUpActivity.this, "quota over", Toast.LENGTH_LONG).show();
+                    // [END_EXCLUDE]
+                }
+            }
+
+            @Override
+            public void onCodeSent(String verificationId,
+                                   PhoneAuthProvider.ForceResendingToken token) {
+                // The SMS verification code has been sent to the provided phone number, we
+                // now need to ask the user to enter the code and then construct a credential
+                // by combining the code with a verification ID.
+                //Log.d(TAG, "onCodeSent:" + verificationId);
+                progressDialog.dismiss();
+                Toast.makeText(SignUpActivity.this, "Verification code sent to mobile", Toast.LENGTH_LONG).show();
+                // Save verification ID and resending token so we can use them later
+                mVerificationId = verificationId;
+                mResendToken = token;
+                registerLayout.setVisibility(View.GONE);
+                otpLayout.setVisibility(View.VISIBLE);
+
+            }
+        };
+
+
+
+        submitOptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (otpEditText.getText().toString().length() > 5) {
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, otpEditText.getText().toString());
+                    signInWithPhoneAuthCredential(credential);
+                } else {
+                    Toast.makeText(SignUpActivity.this, "invalid OTP", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
 
     }
 
@@ -102,20 +225,20 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void fieldValidation() {
 
-        Validation validation=new Validation(this);
-        if (!validation.isValidName(name,inputLayoutName)) {
+        Validation validation = new Validation(this);
+        if (!validation.isValidName(name, inputLayoutName)) {
             return;
         }
-        if (!validation.isValidEmail(email,inputLayoutEmail)) {
+        if (!validation.isValidEmail(email, inputLayoutEmail)) {
             return;
         }
-        if (!validation.isValidMobile(mobile,inputLayoutMobile)) {
+        if (!validation.isValidMobile(mobile, inputLayoutMobile)) {
             return;
         }
-        if (!validation.isValidPassword(password,inputLayoutPassword)) {
+        if (!validation.isValidPassword(password, inputLayoutPassword)) {
             return;
         }
-        if (!validation.isValidConfirmPassword(confirmPassword,inputLayoutConfirmPassword,password)) {
+        if (!validation.isValidConfirmPassword(confirmPassword, inputLayoutConfirmPassword, password)) {
             return;
         }
         retrieveKey(mobile.getText().toString());
@@ -158,23 +281,68 @@ public class SignUpActivity extends AppCompatActivity {
         userBean.setPassword(password.getText().toString());
         progressDialog.show();
 
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                "+91" + mobile,             // Phone number to verify
+                60,                      // Timeout duration
+                TimeUnit.SECONDS,        // Unit of timeout
+                SignUpActivity.this,   // Activity (for callback binding)
+                mCallbacks);
 
-        databaseReference.child(mobile.getText().toString()).setValue(userBean, new DatabaseReference.CompletionListener() {
+
+       /* databaseReference.child(mobile.getText().toString()).setValue(userBean, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError == null) {
                     progressDialog.dismiss();
-                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
-                    intent.putExtra("mobile",mobile.getText().toString());
-                    intent.putExtra("password",password.getText().toString());
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    intent.putExtra("mobile", mobile.getText().toString());
+                    intent.putExtra("password", password.getText().toString());
                     startActivity(intent);
                     finish();
                 } else {
                     progressDialog.dismiss();
                 }
             }
-        });
+        });*/
     }
 
 
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            //Log.d(TAG, "signInWithCredential:success");
+                            Toast.makeText(SignUpActivity.this, "Verification done line No :227", Toast.LENGTH_LONG).show();
+                            FirebaseUser user = task.getResult().getUser();
+                            databaseReference.child(ParameterConstantsDummy.PROFILE).child(userBean.getMobile()).setValue(userBean, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                    if (databaseError == null) {
+                                        progressDialog.dismiss();
+                                        referenceWrapper.setUserBean(userBean);
+                                        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                                        intent.putExtra("mobPass", userBean.getMobile() + " " + userBean.getPassword());
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                    } else {
+                                        progressDialog.dismiss();
+                                    }
+                                }
+                            });
+
+                            // ...
+                        } else {
+                            // Sign in failed, display a message and update the UI
+                            //Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                                Toast.makeText(SignUpActivity.this, "Verification failed code invalid", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+    }
 }

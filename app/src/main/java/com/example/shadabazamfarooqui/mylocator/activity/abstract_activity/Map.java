@@ -52,7 +52,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback,
     public GoogleMap mMap;
     double latitude;
     double longitude;
-    private int PROXIMITY_RADIUS = 100*1000;
+    private int PROXIMITY_RADIUS = 10*1000;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
