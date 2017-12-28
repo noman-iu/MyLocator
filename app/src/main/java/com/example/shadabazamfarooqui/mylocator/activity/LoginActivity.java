@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.shadabazamfarooqui.mylocator.R;
+import com.example.shadabazamfarooqui.mylocator.utils.Networking;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,6 +55,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     TextView skip;
     @Bind(R.id.sign_up)
     TextView sign_up;
+    @Bind(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -75,6 +79,46 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    Snackbar snackbar;
+
+    public void errorMessage(){
+        skip.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Networking.isNetworkAvailable(getApplicationContext())) {
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    finish();
+                } else {
+                    snackbar = Snackbar
+                            .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
+                            .setAction("RETRY", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    networkError();
+                                }
+                            });
+                    snackbar.show();
+                }
+            }
+        });
+    }
+
+    private void networkError(){
+        if (Networking.isNetworkAvailable(getApplicationContext())) {
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            finish();
+        } else {
+            snackbar = Snackbar
+                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            networkError();
+                        }
+                    });
+            snackbar.show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,17 +127,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initActionbar();
-        skip.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-                finish();
-            }
-        });
+
+        errorMessage();
+
         sign_up.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),SignUpActivity.class));
+                startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
             }
         });
         // Set up the login form.
@@ -147,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
-            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
 
         getLoaderManager().initLoader(0, null, this);
@@ -384,7 +424,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

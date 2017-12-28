@@ -75,13 +75,13 @@ public class HomeActivity extends Navigation {
             if (boolForMenu) {
                 mapLayout.setVisibility(View.GONE);
                 listLayout.setVisibility(View.VISIBLE);
-                item.setTitle("List");
+                item.setTitle("Map");
                 boolForMenu = false;
 
             } else {
                 mapLayout.setVisibility(View.VISIBLE);
                 listLayout.setVisibility(View.GONE);
-                item.setTitle("Map");
+                item.setTitle("List");
                 boolForMenu = true;
             }
             return true;
