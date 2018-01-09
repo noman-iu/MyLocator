@@ -2,6 +2,7 @@ package com.example.shadabazamfarooqui.mylocator.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,8 +24,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.shadabazamfarooqui.mylocator.R;
+import com.example.shadabazamfarooqui.mylocator.bean.MosqueRequestBean;
+import com.example.shadabazamfarooqui.mylocator.bean.ReferenceWrapper;
+import com.example.shadabazamfarooqui.mylocator.bean.UserBean;
+import com.example.shadabazamfarooqui.mylocator.utils.ParameterConstants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -31,8 +38,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,10 +57,16 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
     private static final int GALLERY_REQUEST = 4565;
 
     ImageView photoIcon;
+    @Bind(R.id.mosque_name)
+    EditText mosque_name;
+    @Bind(R.id.mosque_address)
+    EditText mosque_address;
+    @Bind(R.id.submitLayout)
+    LinearLayout submit;
+    DatabaseReference databaseReference;
+    ProgressDialog progressDialog;
+    LatLng latLng;
 
-
-    @Bind(R.id.address)
-    EditText address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +75,7 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
         setContentView(R.layout.activity_add_mosque);
         ButterKnife.bind(this);
         initActionbar();
+        progressDialog =new ProgressDialog(AddMosqueActivity.this);
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -82,6 +101,39 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
             @Override
             public void onClick(View v) {
                 dialog();
+            }
+        });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserBean userBean=ReferenceWrapper.getRefrenceWrapper(AddMosqueActivity.this).getUserBean();
+                if (userBean!=null){
+                    MosqueRequestBean mosqueRequestBean=new MosqueRequestBean();
+                    mosqueRequestBean.setBean(userBean);
+                    mosqueRequestBean.setMosqueName(mosque_name.getText().toString());
+                    mosqueRequestBean.setMosqueAddress(mosque_address.getText().toString());
+                    mosqueRequestBean.setLatLong(latLng);
+                    databaseReference = FirebaseDatabase.getInstance().getReference(ParameterConstants.MOSQUE);
+                    Date today = new Date();
+                    long id = today.getTime();
+                    databaseReference.child(""+id).setValue(mosqueRequestBean, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError == null) {
+                                progressDialog.dismiss();
+                                Toast.makeText(AddMosqueActivity.this, "submitted", Toast.LENGTH_SHORT).show();
+
+                                finish();
+                            } else {
+                                Toast.makeText(AddMosqueActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                            }
+                        }
+                    });
+                }else {
+                    Toast.makeText(AddMosqueActivity.this, "Please Log in", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -171,19 +223,9 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                 String toastMsg = String.format("Place: %s", place.getName());
                 Log.i("info", "Place ID:" + place.getId() + " Name :" + place.getName() + " Type :" + place.getPlaceTypes() + " Long :" + place.getLatLng() + " Locale :" + place.getLocale());
                 //Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-                address.setText("" + place.getAddress());
-                //latitude.setText(""+place.getAddress());
+                latLng=place.getLatLng();
+                mosque_address.setText("" + place.getAddress());
 
-               /* AddPlaceRequest newplace =
-                        new AddPlaceRequest(
-                                "Multikbis Technology Pvt. Ltd.", // Name
-                                //new LatLng(-33.7991, 151.2813), // Latitude and longitude
-                                place.getLatLng(), // Latitude and longitude
-                                "Dwarka, New Delhi 110075", // Address
-                                Collections.singletonList(Place.TYPE_RESTAURANT), // Place types
-                                "+91 1800 199 742", // Phone number
-                                Uri.parse("http://www.multikbis.com/") // Website
-                        );*/
 
             }
 

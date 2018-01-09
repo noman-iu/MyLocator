@@ -190,7 +190,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback,
         Log.d("onLocationChanged", "Exit");
 
         if (Map.boolForMapList){
-
             handleMosqueRequest("mosque");
             Map.boolForMapList=false;
         }

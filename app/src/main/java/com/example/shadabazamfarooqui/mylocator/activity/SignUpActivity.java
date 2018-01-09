@@ -281,20 +281,21 @@ public class SignUpActivity extends AppCompatActivity {
         userBean.setPassword(password.getText().toString());
         progressDialog.show();
 
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+       /* PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 "+91" + mobile,             // Phone number to verify
                 60,                      // Timeout duration
                 TimeUnit.SECONDS,        // Unit of timeout
                 SignUpActivity.this,   // Activity (for callback binding)
-                mCallbacks);
+                mCallbacks);*/
 
 
-       /* databaseReference.child(mobile.getText().toString()).setValue(userBean, new DatabaseReference.CompletionListener() {
+        databaseReference.child(mobile.getText().toString()).setValue(userBean, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError == null) {
                     progressDialog.dismiss();
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    referenceWrapper.setUserBean(userBean);
                     intent.putExtra("mobile", mobile.getText().toString());
                     intent.putExtra("password", password.getText().toString());
                     startActivity(intent);
@@ -303,7 +304,7 @@ public class SignUpActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                 }
             }
-        });*/
+        });
     }
 
 
