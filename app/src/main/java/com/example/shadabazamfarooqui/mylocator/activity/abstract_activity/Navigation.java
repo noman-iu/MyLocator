@@ -63,31 +63,6 @@ public class Navigation extends Map implements NavigationView.OnNavigationItemSe
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
-
-   /* @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            if (bool){
-                item.setTitle("List");
-
-                bool=false;
-            }else {
-                item.setTitle("Map");
-                bool=true;
-            }
-
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -113,16 +88,6 @@ public class Navigation extends Map implements NavigationView.OnNavigationItemSe
             Toast.makeText(this, "drawer is not ready", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_send) {
             Toast.makeText(this, "drawer is not ready", Toast.LENGTH_SHORT).show();
-        }else if (id == R.id.nav_logout) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                    //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                }
-            },500);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

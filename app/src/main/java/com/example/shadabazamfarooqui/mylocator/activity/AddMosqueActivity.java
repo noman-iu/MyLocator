@@ -107,6 +107,7 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.show();
                 UserBean userBean=ReferenceWrapper.getRefrenceWrapper(AddMosqueActivity.this).getUserBean();
                 if (userBean!=null){
                     MosqueRequestBean mosqueRequestBean=new MosqueRequestBean();
@@ -122,11 +123,11 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             if (databaseError == null) {
                                 progressDialog.dismiss();
-                                Toast.makeText(AddMosqueActivity.this, "submitted", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddMosqueActivity.this, "your request is submitted", Toast.LENGTH_SHORT).show();
 
                                 finish();
                             } else {
-                                Toast.makeText(AddMosqueActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddMosqueActivity.this, "Sorry! something is wrong", Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();
                             }
                         }
