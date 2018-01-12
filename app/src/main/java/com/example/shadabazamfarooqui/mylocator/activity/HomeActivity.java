@@ -52,7 +52,6 @@ public class HomeActivity extends Navigation {
         if (Networking.isNetworkAvailable(this)){
             progressDialog=new ProgressDialog(this);
             progressDialog.setMessage("Loading...");
-//            progressDialog.show();
             checkGps(this);
             Map.boolForMapList=true;
             onCreateNavigation();

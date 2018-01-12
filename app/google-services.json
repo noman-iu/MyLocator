@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "939125804713-h4fakcf7dggh6enaqflilqcv9o10u3fn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shadabazamfarooqui.mylocator",
+            "certificate_hash": "a9d2b9d4afffa1177e4792b35cecd6c40c2fc255"
+          }
+        },
+        {
           "client_id": "939125804713-3d3q3dimesb6t5iorku7q17fjr8dj7jm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
