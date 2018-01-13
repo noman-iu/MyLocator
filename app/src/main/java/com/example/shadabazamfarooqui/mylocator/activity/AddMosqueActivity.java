@@ -10,9 +10,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +32,10 @@ import com.example.shadabazamfarooqui.mylocator.R;
 import com.example.shadabazamfarooqui.mylocator.bean.MosqueRequestBean;
 import com.example.shadabazamfarooqui.mylocator.bean.ReferenceWrapper;
 import com.example.shadabazamfarooqui.mylocator.bean.UserBean;
+import com.example.shadabazamfarooqui.mylocator.utils.CustomeTittle;
+import com.example.shadabazamfarooqui.mylocator.utils.Networking;
 import com.example.shadabazamfarooqui.mylocator.utils.ParameterConstants;
+import com.example.shadabazamfarooqui.mylocator.utils.Preferences;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -63,9 +68,12 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
     EditText mosque_address;
     @Bind(R.id.submitLayout)
     LinearLayout submit;
+    @Bind(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
     DatabaseReference databaseReference;
     ProgressDialog progressDialog;
     LatLng latLng;
+    Snackbar snackbar;
 
 
     @Override
@@ -74,8 +82,8 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
         //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         setContentView(R.layout.activity_add_mosque);
         ButterKnife.bind(this);
-        initActionbar();
-        progressDialog =new ProgressDialog(AddMosqueActivity.this);
+        CustomeTittle.initActionbar(this, "Add Mosque", true);
+        progressDialog = new ProgressDialog(AddMosqueActivity.this);
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -108,9 +116,10 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
             @Override
             public void onClick(View view) {
                 progressDialog.show();
-                UserBean userBean=ReferenceWrapper.getRefrenceWrapper(AddMosqueActivity.this).getUserBean();
-                if (userBean!=null){
-                    MosqueRequestBean mosqueRequestBean=new MosqueRequestBean();
+                UserBean userBean = ReferenceWrapper.getRefrenceWrapper(AddMosqueActivity.this).getUserBean();
+                Boolean check = Preferences.getInstance(AddMosqueActivity.this).getLogin();
+                if (userBean!=null) {
+                    MosqueRequestBean mosqueRequestBean = new MosqueRequestBean();
                     mosqueRequestBean.setBean(userBean);
                     mosqueRequestBean.setMosqueName(mosque_name.getText().toString());
                     mosqueRequestBean.setMosqueAddress(mosque_address.getText().toString());
@@ -118,45 +127,34 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                     databaseReference = FirebaseDatabase.getInstance().getReference(ParameterConstants.MOSQUE);
                     Date today = new Date();
                     long id = today.getTime();
-                    databaseReference.child(""+id).setValue(mosqueRequestBean, new DatabaseReference.CompletionListener() {
+                    databaseReference.child("" + id).setValue(mosqueRequestBean, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             if (databaseError == null) {
                                 progressDialog.dismiss();
                                 Toast.makeText(AddMosqueActivity.this, "your request is submitted", Toast.LENGTH_SHORT).show();
-
-                                finish();
                             } else {
                                 Toast.makeText(AddMosqueActivity.this, "Sorry! something is wrong", Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();
                             }
                         }
                     });
-                }else {
-                    Toast.makeText(AddMosqueActivity.this, "Please Log in", Toast.LENGTH_SHORT).show();
+                } else {
+                    progressDialog.dismiss();
+                    snackbar = Snackbar
+                            .make(coordinatorLayout, "Please Sign Up!", Snackbar.LENGTH_LONG)
+                            .setAction("SIGN UP", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    errorMessage();
+                                }
+                            });
+                    snackbar.show();
                 }
             }
         });
     }
 
-    private void initActionbar() {
-        ActionBar actionBar = getSupportActionBar();
-        View viewActionBar = getLayoutInflater().inflate(R.layout.action_bar_tittle_text_layout, null);
-        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
-                ActionBar.LayoutParams.WRAP_CONTENT,
-                ActionBar.LayoutParams.MATCH_PARENT,
-                Gravity.CENTER);
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#009DE0")));
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        actionBar.setCustomView(viewActionBar, params);
-        TextView actionbarTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
-        actionbarTitle.setText("ADD MASQUE");
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-    }
 
     void dialog() {
         final CharSequence[] items = {"Camera", "Gallery"};
@@ -224,7 +222,7 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                 String toastMsg = String.format("Place: %s", place.getName());
                 Log.i("info", "Place ID:" + place.getId() + " Name :" + place.getName() + " Type :" + place.getPlaceTypes() + " Long :" + place.getLatLng() + " Locale :" + place.getLocale());
                 //Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-                latLng=place.getLatLng();
+                latLng = place.getLatLng();
                 mosque_address.setText("" + place.getAddress());
 
 
@@ -246,5 +244,44 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public void errorMessage() {
+
+        if (Networking.isNetworkAvailable(getApplicationContext())) {
+            startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
+        } else {
+            snackbar = Snackbar
+                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            networkError();
+                        }
+                    });
+            snackbar.show();
+        }
+    }
+
+    private void networkError() {
+        if (Networking.isNetworkAvailable(getApplicationContext())) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
+                    finish();
+                }
+            }, 3 * 1000);
+        } else {
+            snackbar = Snackbar
+                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            networkError();
+                        }
+                    });
+            snackbar.show();
+        }
     }
 }

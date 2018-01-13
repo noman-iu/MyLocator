@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-android:id="@+id/coordinatorLayout"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.shadabazamfarooqui.mylocator.activity.HomeActivity"
     tools:showIn="@layout/app_bar_home">
 
-    <RelativeLayout
+
+    <FrameLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_weight="1">
 
+
+        <!--Map Layout-->
         <LinearLayout
             android:id="@+id/mapLayout"
             android:layout_width="match_parent"
@@ -30,22 +35,69 @@ android:id="@+id/coordinatorLayout"
                 tools:context="com.androidtutorialpoint.googlemapsretrofit.MapsActivity" />
         </LinearLayout>
 
+        <!--List Layout-->
         <LinearLayout
             android:id="@+id/listLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:gravity="center"
+            android:orientation="horizontal"
             android:visibility="gone">
 
             <ListView
-                android:layout_width="match_parent"
                 android:id="@+id/mosqueList"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"></ListView>
         </LinearLayout>
 
-    </RelativeLayout>
+        <!-- Qibla Layout -->
+        <LinearLayout
+            android:id="@+id/qiblaLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
-</android.support.design.widget.CoordinatorLayout>
+            <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                android:id="@+id/qibla"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:text="@string/title_qibla"
+                android:layout_height="match_parent"></com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView>
+        </LinearLayout>
+
+        <!--more Layout-->
+        <LinearLayout
+            android:id="@+id/moreLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                android:id="@+id/moreList"
+                android:text="@string/title_more"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="match_parent"></com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView>
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/navigation" />
+</LinearLayout>

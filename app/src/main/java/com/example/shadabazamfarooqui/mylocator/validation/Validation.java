@@ -53,7 +53,9 @@ public class Validation {
 
     public boolean isValidEmail(EditText email ,TextInputLayout inputLayoutEmail) {
         String emailAdd = email.getText().toString().trim();
-
+        if (emailAdd.isEmpty()){
+            return true;
+        }
         if (emailAdd.isEmpty() || !isValidEmail(emailAdd)) {
             inputLayoutEmail.setError("Invalid Email");
             requestFocus(email,(Activity)context);

@@ -87,6 +87,25 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback,
 
     }
 
+    public void onCreateMap(){
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkLocationPermission();
+        }
+        //show error dialog if Google Play Services not available
+        if (!isGooglePlayServicesAvailable()) {
+            Log.d("onCreate", "Google Play Services not available. Ending Test case.");
+            finish();
+        } else {
+            Log.d("onCreate", "Google Play Services available. Continuing.");
+        }
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+    }
+
     private boolean isGooglePlayServicesAvailable() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
         int result = googleAPI.isGooglePlayServicesAvailable(this);
@@ -193,12 +212,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback,
             handleMosqueRequest("mosque");
             Map.boolForMapList=false;
         }
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                boolForMapList=true;
-            }
-        },60*1000);*/
     }
 
 

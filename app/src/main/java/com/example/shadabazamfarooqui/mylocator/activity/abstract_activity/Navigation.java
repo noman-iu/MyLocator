@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.shadabazamfarooqui.mylocator.R;
 import com.example.shadabazamfarooqui.mylocator.activity.AddMosqueActivity;
-import com.example.shadabazamfarooqui.mylocator.activity.LoginActivity;
 
 /**
  * Created by Shadab Azam Farooqui on 24-Dec-17.
@@ -73,21 +72,50 @@ public class Navigation extends Map implements NavigationView.OnNavigationItemSe
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent=new Intent(getApplicationContext(), AddMosqueActivity.class);
-                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "drawer is not ready", Toast.LENGTH_SHORT).show();
                     //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 }
             },500);
         } else if (id == R.id.nav_gallery) {
-            Toast.makeText(this, "drawer is not ready", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "drawer is not ready", Toast.LENGTH_SHORT).show();
+                    //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                }
+            },500);
         } else if (id == R.id.nav_slideshow) {
-            Toast.makeText(this, "drawer is not ready", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "drawer is not ready", Toast.LENGTH_SHORT).show();
+                    //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                }
+            },500);
         } else if (id == R.id.nav_manage) {
-            Toast.makeText(this, "drawer is not ready", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "drawer is not ready", Toast.LENGTH_SHORT).show();
+                    //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                }
+            },500);
         } else if (id == R.id.nav_share) {
-            Toast.makeText(this, "drawer is not ready", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "drawer is not ready", Toast.LENGTH_SHORT).show();
+                    //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                }
+            },500);
         } else if (id == R.id.nav_send) {
-            Toast.makeText(this, "drawer is not ready", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "drawer is not ready", Toast.LENGTH_SHORT).show();
+                    //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                }
+            },500);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

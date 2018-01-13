@@ -11,20 +11,20 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:visibility="visible">
 
         <LinearLayout
+            android:id="@+id/register_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:visibility="visible"
-            android:id="@+id/register_layout"
-            android:orientation="vertical">
-
+            android:layout_margin="20dp"
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                android:id="@+id/buzzTextView"
                 style="@style/Gotham_Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,22 +41,20 @@
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="50dp"
+                    android:background="@drawable/bg_grey_stroke"
+                    android:minHeight="40dp"
                     android:padding="10dp"
                     android:textSize="16sp" />
-
             </android.support.design.widget.TextInputLayout>
-
 
             <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
                 style="@style/Gotham_Medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Email"
+                android:layout_marginTop="20dp"
+                android:text="Email (Optional)"
                 android:textColor="#000"
                 android:textSize="15sp" />
-
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/inputLayoutEmail"
@@ -68,23 +66,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:minHeight="50dp"
+                    android:background="@drawable/bg_grey_stroke"
+                    android:minHeight="40dp"
                     android:padding="10dp"
                     android:textSize="16sp" />
-
             </android.support.design.widget.TextInputLayout>
-
 
             <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
                 android:id="@+id/textView2"
                 style="@style/Gotham_Medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:text="Mobile Number"
                 android:textColor="#000"
                 android:textSize="15sp" />
-
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/inputLayoutMobile"
@@ -94,96 +90,28 @@
                 <com.example.shadabazamfarooqui.mylocator.utils.BuzzEditText
                     android:id="@+id/mobile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:inputType="number"
+                    android:background="@drawable/bg_grey_stroke"
                     android:maxLength="10"
-                    android:minHeight="50dp"
+                    android:minHeight="40dp"
                     android:padding="10dp"
                     android:textSize="16sp" />
-
             </android.support.design.widget.TextInputLayout>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
-                    style="@style/Gotham_Medium"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Password"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
-
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/inputLayoutPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.example.shadabazamfarooqui.mylocator.utils.BuzzEditText
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:minHeight="50dp"
-                        android:padding="10dp"
-                        android:textSize="16sp" />
-
-                </android.support.design.widget.TextInputLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
-                    style="@style/Gotham_Medium"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Confirm Password"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
-
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/inputLayoutConfirmPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.example.shadabazamfarooqui.mylocator.utils.BuzzEditText
-                        android:id="@+id/confirm_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:minHeight="50dp"
-                        android:padding="10dp"
-                        android:textSize="16sp" />
-
-                </android.support.design.widget.TextInputLayout>
-
-
-            </LinearLayout>
-
+                android:orientation="vertical"></LinearLayout>
 
             <LinearLayout
                 android:id="@+id/submit"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/background"
                 android:gravity="center">
-
 
                 <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
                     style="@style/Gotham_Medium"
@@ -195,33 +123,32 @@
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
-
-
     </ScrollView>
 
 
     <LinearLayout
+        android:id="@+id/otp_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_marginTop="100dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:id="@+id/otp_layout">
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <com.example.shadabazamfarooqui.mylocator.utils.BuzzEditText
+            android:id="@+id/enter_otp_edit_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/enter_otp_edit_text"/>
+            android:layout_height="wrap_content" />
+
         <Button
+            android:id="@+id/submit_otp_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/submit_otp_btn"
-            android:textColor="@color/white"
-            android:text="Submit"
             android:layout_marginTop="20dp"
-            android:background="@drawable/background"/>
+            android:background="@drawable/background"
+            android:text="Submit"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

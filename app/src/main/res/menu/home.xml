@@ -5,12 +5,12 @@
         android:id="@+id/action_refresh"
         android:orderInCategory="100"
         android:title="Refresh"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_add_mosue"
         android:orderInCategory="100"
-        android:title="List"
-        app:showAsAction="always" />
+        android:title="Add Mosque"
+        app:showAsAction="never" />
 
 
 </menu>

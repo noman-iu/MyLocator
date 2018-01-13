@@ -55,12 +55,8 @@ public class SignUpActivity extends AppCompatActivity {
     EditText name;
     @Bind(R.id.email)
     EditText email;
-    @Bind(R.id.password)
-    EditText password;
     @Bind(R.id.mobile)
     EditText mobile;
-    @Bind(R.id.confirm_password)
-    EditText confirmPassword;
     @Bind(R.id.submit)
     LinearLayout submit;
     @Bind(R.id.inputLayoutName)
@@ -69,10 +65,6 @@ public class SignUpActivity extends AppCompatActivity {
     TextInputLayout inputLayoutEmail;
     @Bind(R.id.inputLayoutMobile)
     TextInputLayout inputLayoutMobile;
-    @Bind(R.id.inputLayoutPassword)
-    TextInputLayout inputLayoutPassword;
-    @Bind(R.id.inputLayoutConfirmPassword)
-    TextInputLayout inputLayoutConfirmPassword;
     @Bind(R.id.enter_otp_edit_text)
     EditText otpEditText;
     @Bind(R.id.submit_otp_btn)
@@ -111,70 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
                 fieldValidation();
             }
         });
-
-
         mAuth = FirebaseAuth.getInstance();
-       /* mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-            @Override
-            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                Toast.makeText(SignUpActivity.this, "verification done line No :153", Toast.LENGTH_LONG).show();
-
-                databaseReference.child(mobile.getText().toString()).setValue(userBean, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if (databaseError == null) {
-                            progressDialog.dismiss();
-                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                            intent.putExtra("mobile", mobile.getText().toString());
-                            intent.putExtra("password", password.getText().toString());
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            progressDialog.dismiss();
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onCodeSent(String verificationId,
-                                   PhoneAuthProvider.ForceResendingToken token) {
-                // The SMS verification code has been sent to the provided phone number, we
-                // now need to ask the user to enter the code and then construct a credential
-                // by combining the code with a verification ID.
-                //Log.d(TAG, "onCodeSent:" + verificationId);
-                progressDialog.dismiss();
-                Toast.makeText(SignUpActivity.this, "Verification code sent to mobile", Toast.LENGTH_LONG).show();
-                // Save verification ID and resending token so we can use them later
-                mVerificationId = verificationId;
-                mResendToken = token;
-                registerLayout.setVisibility(View.GONE);
-                otpLayout.setVisibility(View.VISIBLE);
-
-            }
-
-            @Override
-            public void onVerificationFailed(FirebaseException e) {
-                progressDialog.dismiss();
-                Toast.makeText(SignUpActivity.this, "verification fail", Toast.LENGTH_LONG).show();
-                if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    // Invalid request
-                    // [START_EXCLUDE]
-                    Toast.makeText(SignUpActivity.this, "invalid mob no", Toast.LENGTH_LONG).show();
-                    // [END_EXCLUDE]
-                } else if (e instanceof FirebaseTooManyRequestsException) {
-                    // The SMS quota for the project has been exceeded
-                    // [START_EXCLUDE]
-                    Toast.makeText(SignUpActivity.this, "quota over", Toast.LENGTH_LONG).show();
-                    // [END_EXCLUDE]
-                }
-            }
-
-
-        };*/
-
-
         submitOptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -184,11 +113,8 @@ public class SignUpActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(SignUpActivity.this, "invalid OTP", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
-
-
     }
 
     private void initActionbar() {
@@ -220,12 +146,6 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
         if (!validation.isValidMobile(mobile, inputLayoutMobile)) {
-            return;
-        }
-        if (!validation.isValidPassword(password, inputLayoutPassword)) {
-            return;
-        }
-        if (!validation.isValidConfirmPassword(confirmPassword, inputLayoutConfirmPassword, password)) {
             return;
         }
         retrieveKey(mobile.getText().toString());
@@ -264,7 +184,7 @@ public class SignUpActivity extends AppCompatActivity {
         userBean.setName(name.getText().toString());
         userBean.setEmail(email.getText().toString());
         userBean.setMobile(mobile.getText().toString());
-        userBean.setPassword(password.getText().toString());
+//        userBean.setPassword(password.getText().toString());
         progressDialog.show();
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -330,26 +250,7 @@ public class SignUpActivity extends AppCompatActivity {
                         }
 
                     }
-
                 });
-
-
-        /*databaseReference.child(mobile.getText().toString()).setValue(userBean, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError == null) {
-                    progressDialog.dismiss();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    referenceWrapper.setUserBean(userBean);
-                    intent.putExtra("mobile", mobile.getText().toString());
-                    intent.putExtra("password", password.getText().toString());
-                    startActivity(intent);
-                    finish();
-                } else {
-                    progressDialog.dismiss();
-                }
-            }
-        });*/
     }
 
 
