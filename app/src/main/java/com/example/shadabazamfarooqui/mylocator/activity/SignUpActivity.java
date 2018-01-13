@@ -108,6 +108,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (otpEditText.getText().toString().length() > 5) {
+                    progressDialog.show();
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, otpEditText.getText().toString());
                     signInWithPhoneAuthCredential(credential);
                 } else {
@@ -174,19 +175,14 @@ public class SignUpActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void register() {
-
-        final UserBean userBean = new UserBean();
+        userBean = new UserBean();
         userBean.setName(name.getText().toString());
         userBean.setEmail(email.getText().toString());
         userBean.setMobile(mobile.getText().toString());
-//        userBean.setPassword(password.getText().toString());
         progressDialog.show();
-
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 "+91" + userBean.getMobile(),             // Phone number to verify
                 120,                      // Timeout duration
@@ -195,34 +191,15 @@ public class SignUpActivity extends AppCompatActivity {
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                        Toast.makeText(SignUpActivity.this, "verification done line No :153", Toast.LENGTH_LONG).show();
-                        Preferences.getInstance(getApplicationContext()).setLogin(true);
-                        databaseReference.child(mobile.getText().toString()).setValue(userBean, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                if (databaseError == null) {
-                                    progressDialog.dismiss();
-                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                    Preferences.getInstance(getApplicationContext()).setLogin(true);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    progressDialog.dismiss();
-                                }
-                            }
-                        });
+                        Toast.makeText(SignUpActivity.this, "verification done line No :198", Toast.LENGTH_LONG).show();
+                       saveData();
                     }
 
                     @Override
                     public void onCodeSent(String verificationId,
                                            PhoneAuthProvider.ForceResendingToken token) {
-                        // The SMS verification code has been sent to the provided phone number, we
-                        // now need to ask the user to enter the code and then construct a credential
-                        // by combining the code with a verification ID.
-                        //Log.d(TAG, "onCodeSent:" + verificationId);
                         progressDialog.dismiss();
                         Toast.makeText(SignUpActivity.this, "Verification code sent to mobile", Toast.LENGTH_LONG).show();
-                        // Save verification ID and resending token so we can use them later
                         mVerificationId = verificationId;
                         mResendToken = token;
                         registerLayout.setVisibility(View.GONE);
@@ -236,17 +213,9 @@ public class SignUpActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         Toast.makeText(SignUpActivity.this, "verification fail", Toast.LENGTH_LONG).show();
                         if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                            // Invalid request
-                            // [START_EXCLUDE]
                             Toast.makeText(SignUpActivity.this, "invalid mob no", Toast.LENGTH_LONG).show();
-
-
-                            // [END_EXCLUDE]
                         } else if (e instanceof FirebaseTooManyRequestsException) {
-                            // The SMS quota for the project has been exceeded
-                            // [START_EXCLUDE]
                             Toast.makeText(SignUpActivity.this, "quota over", Toast.LENGTH_LONG).show();
-                            // [END_EXCLUDE]
                         }
 
                     }
@@ -260,38 +229,33 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            //Log.d(TAG, "signInWithCredential:success");
-                            Toast.makeText(SignUpActivity.this, "Verification done line No :227", Toast.LENGTH_LONG).show();
-                            FirebaseUser user = task.getResult().getUser();
-                            databaseReference = FirebaseDatabase.getInstance().getReference(ParameterConstants.USERS);
-                            Preferences.getInstance(getApplicationContext()).setLogin(true);
-                            databaseReference.child(userBean.getMobile()).setValue(userBean, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if (databaseError == null) {
-                                        progressDialog.dismiss();
-                                        referenceWrapper.setUserBean(userBean);
-                                        Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-                                        Preferences.getInstance(getApplicationContext()).setLogin(true);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                    } else {
-                                        progressDialog.dismiss();
-                                    }
-                                }
-                            });
-
-                            // ...
+                            saveData();
                         } else {
-                            // Sign in failed, display a message and update the UI
-                            //Log.w(TAG, "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
                                 Toast.makeText(SignUpActivity.this, "Verification failed code invalid", Toast.LENGTH_LONG).show();
                             }
                         }
                     }
                 });
+    }
+
+    private void saveData(){
+        databaseReference.child(mobile.getText().toString()).setValue(userBean, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    progressDialog.dismiss();
+
+                    Toast.makeText(SignUpActivity.this, "Verifiction done !", Toast.LENGTH_SHORT).show();
+                    referenceWrapper.setUserBean(userBean);
+                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                    Preferences.getInstance(getApplicationContext()).setLogin(true);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } else {
+                    progressDialog.dismiss();
+                }
+            }
+        });
     }
 }

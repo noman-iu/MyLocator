@@ -35,18 +35,10 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void errorMessage() {
-
         if (Networking.isNetworkAvailable(getApplicationContext())) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                   /* if (Preferences.getInstance(getApplicationContext()).getLogin()){
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                        finish();
-                    }else {
-                        startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
-                        finish();
-                    }*/
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     finish();
 

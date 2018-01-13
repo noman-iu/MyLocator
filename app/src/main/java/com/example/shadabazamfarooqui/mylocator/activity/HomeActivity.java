@@ -69,6 +69,7 @@ public class HomeActivity extends Navigation {
             onCreateMap(mosqueList);
         }else {
 //            Snackbar.make(coordinatorLayout,"Check your internet connection",Snackbar.LENGTH_LONG).show();
+            Toast.makeText(context, "Check your internet connection", Toast.LENGTH_LONG).show();
         }
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

@@ -60,7 +60,7 @@
                         android:background="@drawable/bg_grey_stroke"
                         android:layout_height="wrap_content"
                         android:minHeight="40dp"
-                        android:padding="10dp"
+                        android:padding="5dp"
                         android:textSize="16sp" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_grey_stroke"
                         android:minHeight="40dp"
-                        android:padding="10dp"
+                        android:padding="5dp"
                         android:textSize="16sp" />
 
                 </android.support.design.widget.TextInputLayout>
