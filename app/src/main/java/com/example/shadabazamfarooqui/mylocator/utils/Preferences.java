@@ -15,11 +15,9 @@ public class Preferences {
     private static final String PREF_NAME = "Bahikhata";
     private static Preferences instance;
     private static final String IS_LOGIN = "Login";
-
-
-
     private static final String name="name";
     private static final String mobile="mobile";
+    private static final String email="email";
 
 
     private Preferences(Context context) {
@@ -60,6 +58,15 @@ public class Preferences {
     }
     public String getMobile() {
         return pref.getString(mobile, "");
+    }
+
+
+    public void setEmail(String userEmail) {
+        editor.putString(email, userEmail);
+        editor.commit();
+    }
+    public String getEmail() {
+        return pref.getString(email, "");
     }
 
 }

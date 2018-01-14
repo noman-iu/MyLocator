@@ -41,21 +41,22 @@
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/home_title"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.AddMosqueActivity"
-            android:parentActivityName=".activity.HomeActivity"></activity>
+            android:parentActivityName=".activity.HomeActivity" />
         <activity
             android:name=".activity.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.DummyActivity"></activity>
     </application>
 
 </manifest>

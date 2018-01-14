@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="horizontal"
+    android:id="@+id/mainLayout"
     android:layout_height="wrap_content">
 
     <ImageView
@@ -20,7 +21,7 @@
 
         <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
             android:id="@+id/name"
-            style="@style/Gotham_Black"
+            style="@style/Gotham_Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -32,12 +33,12 @@
 
         <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
             android:id="@+id/rating"
-            style="@style/Gotham_Book"
+            style="@style/Gotham_Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:maxLines="1"
             android:text="Rating"
             android:textColor="@color/black" />
 
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:maxLines="1"
             android:text="address of place"
             android:textColor="@color/black" />
     </LinearLayout>

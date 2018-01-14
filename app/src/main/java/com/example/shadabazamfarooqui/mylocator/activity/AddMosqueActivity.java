@@ -115,10 +115,15 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.setMessage("Please wait...");
                 progressDialog.show();
                 UserBean userBean = ReferenceWrapper.getRefrenceWrapper(AddMosqueActivity.this).getUserBean();
                 Boolean check = Preferences.getInstance(AddMosqueActivity.this).getLogin();
-                if (userBean!=null) {
+                if (check) {
+                    userBean = new UserBean();
+                    userBean.setName(Preferences.getInstance(getApplicationContext()).getName());
+                    userBean.setEmail(Preferences.getInstance(getApplicationContext()).getEmail());
+                    userBean.setMobile(Preferences.getInstance(getApplicationContext()).getMobile());
                     MosqueRequestBean mosqueRequestBean = new MosqueRequestBean();
                     mosqueRequestBean.setBean(userBean);
                     mosqueRequestBean.setMosqueName(mosque_name.getText().toString());
@@ -132,9 +137,9 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             if (databaseError == null) {
                                 progressDialog.dismiss();
-                                Toast.makeText(AddMosqueActivity.this, "your request is submitted", Toast.LENGTH_SHORT).show();
+                                Snackbar.make(coordinatorLayout, "your request is submitted", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(AddMosqueActivity.this, "Sorry! something is wrong", Toast.LENGTH_SHORT).show();
+                                Snackbar.make(coordinatorLayout, "Sorry! something is wrong", Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();
                             }
                         }

@@ -29,14 +29,28 @@
                 android:orientation="vertical"
                 android:visibility="visible">
 
-                <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
-                    android:id="@+id/buzzTextView"
-                    style="@style/Gotham_Medium"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Name *"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
+                    android:orientation="horizontal">
+
+                    <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                        android:id="@+id/buzzTextView"
+                        style="@style/Gotham_Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name "
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+
+                    <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                        style="@style/Gotham_Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/inputLayoutName"
@@ -48,19 +62,37 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_grey_stroke"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
                         android:minHeight="40dp"
                         android:padding="10dp"
                         android:textSize="16sp" />
+
+
                 </android.support.design.widget.TextInputLayout>
 
-                <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
-                    style="@style/Gotham_Medium"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Email (Optional)"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                        style="@style/Gotham_Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Email "
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+
+                    <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                        style="@style/Gotham_Medium"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="(Optional)"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/inputLayoutEmail"
@@ -78,15 +110,30 @@
                         android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
 
-                <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
-                    android:id="@+id/textView2"
-                    style="@style/Gotham_Medium"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Mobile Number *"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+
+                   <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                       android:id="@+id/textView2"
+                       style="@style/Gotham_Medium"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="20dp"
+                       android:text="Mobile Number "
+                       android:textColor="#000"
+                       android:textSize="15sp" />
+                   <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                       style="@style/Gotham_Medium"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="20dp"
+                       android:text="*"
+                       android:textColor="@color/red"
+                       android:textSize="15sp" />
+
+
+               </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/inputLayoutMobile"

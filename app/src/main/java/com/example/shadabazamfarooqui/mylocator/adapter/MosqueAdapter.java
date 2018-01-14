@@ -2,11 +2,13 @@ package com.example.shadabazamfarooqui.mylocator.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.shadabazamfarooqui.mylocator.R;
@@ -42,11 +44,9 @@ public class MosqueAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return 0;
     }
-
+    ViewHolder holder = null;
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-
-        ViewHolder holder = null;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
        // LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         // well set up the ViewHolder
@@ -57,6 +57,7 @@ public class MosqueAdapter extends BaseAdapter {
             holder.rating = (TextView) convertView.findViewById(R.id.rating);
             holder.address = (TextView) convertView.findViewById(R.id.address);
             holder.image = (ImageView) convertView.findViewById(R.id.img);
+            holder.mainLayout=(LinearLayout) convertView.findViewById(R.id.mainLayout);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -68,12 +69,14 @@ public class MosqueAdapter extends BaseAdapter {
         Picasso.with(context)
                 .load(response.getResults().get(i).getIcon())
                 .into(holder.image);
+        
         return convertView;
     }
 
     static class ViewHolder {
         TextView name, address, rating;
         ImageView image;
+        LinearLayout mainLayout;
     }
 
 

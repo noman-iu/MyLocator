@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.shadabazamfarooqui.mylocator.R;
-import com.example.shadabazamfarooqui.mylocator.activity.AddMosqueActivity;
+import com.example.shadabazamfarooqui.mylocator.activity.DummyActivity;
 
 /**
  * Created by Shadab Azam Farooqui on 24-Dec-17.
@@ -72,7 +72,7 @@ public class Navigation extends Map implements NavigationView.OnNavigationItemSe
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "drawer is not ready", Toast.LENGTH_SHORT).show();
+                  startActivity(new Intent(getApplicationContext(), DummyActivity.class));
                     //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 }
             },500);

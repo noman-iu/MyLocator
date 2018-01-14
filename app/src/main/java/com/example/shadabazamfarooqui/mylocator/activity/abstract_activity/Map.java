@@ -11,7 +11,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.shadabazamfarooqui.mylocator.R;
 import com.example.shadabazamfarooqui.mylocator.activity.HomeActivity;
+import com.example.shadabazamfarooqui.mylocator.activity.DummyActivity;
 import com.example.shadabazamfarooqui.mylocator.adapter.MosqueAdapter;
 import com.example.shadabazamfarooqui.mylocator.api.ApiClient;
 import com.example.shadabazamfarooqui.mylocator.network.request.GetRequest;
@@ -39,8 +39,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -316,7 +314,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback,
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
                     }
+                    DummyActivity.response=response.body();
                     mosqueList.setAdapter(new MosqueAdapter(HomeActivity.context,response.body()));
+
                 } catch (Exception e) {
 
                     Log.d("onResponse", "There is an error");

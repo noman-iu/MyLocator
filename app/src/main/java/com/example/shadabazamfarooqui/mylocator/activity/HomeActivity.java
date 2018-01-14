@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.shadabazamfarooqui.mylocator.R;
 import com.example.shadabazamfarooqui.mylocator.activity.abstract_activity.Map;
 import com.example.shadabazamfarooqui.mylocator.activity.abstract_activity.Navigation;
+import com.example.shadabazamfarooqui.mylocator.adapter.MoreListAdapter;
 import com.example.shadabazamfarooqui.mylocator.adapter.MosqueAdapter;
 import com.example.shadabazamfarooqui.mylocator.network.request.GetRequest;
 import com.example.shadabazamfarooqui.mylocator.utils.BottomNavigationViewHelper;
@@ -31,6 +32,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,9 +54,15 @@ public class HomeActivity extends Navigation {
     LinearLayout qiblaLayout;
     @Bind(R.id.moreLayout)
     LinearLayout moreLayout;
+    @Bind(R.id.moreList)
+    ListView moreList;
     private Boolean boolForMenu = true;
     public static Context context;
     boolean doubleBackToExitPressedOnce = false;
+
+    List<String> listName;
+    List<Integer> listImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +81,8 @@ public class HomeActivity extends Navigation {
 //            Snackbar.make(coordinatorLayout,"Check your internet connection",Snackbar.LENGTH_LONG).show();
             Toast.makeText(context, "Check your internet connection", Toast.LENGTH_LONG).show();
         }
+
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         BottomNavigationViewHelper.disableShiftMode(navigation);
@@ -144,6 +156,7 @@ public class HomeActivity extends Navigation {
                     listLayout.setVisibility(View.GONE);
                     qiblaLayout.setVisibility(View.GONE);
                     moreLayout.setVisibility(View.VISIBLE);
+                    moreListContent();
                     return true;
             }
             return false;
@@ -168,5 +181,47 @@ public class HomeActivity extends Navigation {
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
+    }
+
+    private void moreListContent(){
+        listName=new ArrayList<>();
+        listImage=new ArrayList<>();
+
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+        listName.add("Abc");
+
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+        listImage.add(R.drawable.about_us_icon);
+
+        moreList.setAdapter(new MoreListAdapter(getApplicationContext(),listName,listImage));
+
     }
 }

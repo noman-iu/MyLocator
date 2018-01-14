@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -164,7 +165,17 @@ public class SignUpActivity extends AppCompatActivity {
                     register();
                 } else {
                     progressDialog.dismiss();
-                    Snackbar.make(coordinatorLayout, "Already Registered", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Sorry ! You have Already Registered, Please proceed ", Snackbar.LENGTH_SHORT).show();
+                    Preferences.getInstance(getApplicationContext()).setLogin(true);
+                    Preferences.getInstance(getApplicationContext()).setName(userBean.getName());
+                    Preferences.getInstance(getApplicationContext()).setEmail(userBean.getEmail());
+                    Preferences.getInstance(getApplicationContext()).setMobile(userBean.getMobile());
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    },2000);
                 }
             }
 
@@ -245,13 +256,22 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError == null) {
                     progressDialog.dismiss();
-
-                    Toast.makeText(SignUpActivity.this, "Verifiction done !", Toast.LENGTH_SHORT).show();
-                    referenceWrapper.setUserBean(userBean);
-                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                    Toast.makeText(SignUpActivity.this, "Verification done !", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                     Preferences.getInstance(getApplicationContext()).setLogin(true);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    Preferences.getInstance(getApplicationContext()).setName(userBean.getName());
+                    Preferences.getInstance(getApplicationContext()).setEmail(userBean.getEmail());
+                    Preferences.getInstance(getApplicationContext()).setMobile(userBean.getMobile());
+                    Snackbar.make(coordinatorLayout, "Your have registered successfully", Snackbar.LENGTH_SHORT).show();
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    },5000);
+                    finish();
                 } else {
                     progressDialog.dismiss();
                 }
