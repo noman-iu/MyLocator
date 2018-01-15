@@ -1,5 +1,6 @@
 package com.example.shadabazamfarooqui.mylocator.activity;
 
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ExpandableListView;
@@ -16,13 +17,13 @@ public class DummyActivity extends AppCompatActivity {
     @Bind(R.id.expandableListView)
     ExpandableListView expandableListView;
     public static GetRequest response;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dummy);
         ButterKnife.bind(this);
         expandableListView.setAdapter(new MosqueExpandableListAdapter(getApplicationContext(),response));
-
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousItem = -1;
 

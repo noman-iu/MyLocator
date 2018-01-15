@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.shadabazamfarooqui.mylocator.R;
 import com.example.shadabazamfarooqui.mylocator.network.request.GetRequest;
+import com.example.shadabazamfarooqui.mylocator.utils.DistanceCalculation;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -56,6 +57,7 @@ public class MosqueAdapter extends BaseAdapter {
             holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.rating = (TextView) convertView.findViewById(R.id.rating);
             holder.address = (TextView) convertView.findViewById(R.id.address);
+            holder.distance = (TextView) convertView.findViewById(R.id.distance);
             holder.image = (ImageView) convertView.findViewById(R.id.img);
             holder.mainLayout=(LinearLayout) convertView.findViewById(R.id.mainLayout);
             convertView.setTag(holder);
@@ -66,15 +68,22 @@ public class MosqueAdapter extends BaseAdapter {
         holder.name.setText("" + response.getResults().get(i).getName());
         holder.address.setText("" + response.getResults().get(i).getVicinity());
         holder.rating.setText("Rating  " + response.getResults().get(i).getRating());
+        Double distanceDouble = (DistanceCalculation.getDistance(DistanceCalculation.lat1, DistanceCalculation.long1, response.getResults().get(i).getGeometry().getLocation().getLat(), response.getResults().get(i).getGeometry().getLocation().getLng())) / 1000;
+        String distanceString = String.valueOf(distanceDouble);
+        int index = distanceString.indexOf(".");
+        String printDistance = distanceString.substring(0, (index + 3));
+        holder.distance.setText(" " + printDistance+" km");
         Picasso.with(context)
                 .load(response.getResults().get(i).getIcon())
                 .into(holder.image);
+
+
         
         return convertView;
     }
 
     static class ViewHolder {
-        TextView name, address, rating;
+        TextView name, address, rating,distance;
         ImageView image;
         LinearLayout mainLayout;
     }

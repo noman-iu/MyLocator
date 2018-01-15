@@ -25,6 +25,7 @@ import com.example.shadabazamfarooqui.mylocator.activity.DummyActivity;
 import com.example.shadabazamfarooqui.mylocator.adapter.MosqueAdapter;
 import com.example.shadabazamfarooqui.mylocator.api.ApiClient;
 import com.example.shadabazamfarooqui.mylocator.network.request.GetRequest;
+import com.example.shadabazamfarooqui.mylocator.utils.DistanceCalculation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -187,6 +188,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback,
         //Place current location marker
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+
+        DistanceCalculation.lat1=latitude;
+        DistanceCalculation.long1=longitude;
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);

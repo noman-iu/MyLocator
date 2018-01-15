@@ -4,12 +4,71 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/app_icon" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                android:id="@+id/name"
+                style="@style/Gotham_Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:text="name of place"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                android:id="@+id/rating"
+                style="@style/Gotham_Light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:maxLines="1"
+                android:text="Rating"
+                android:textColor="@color/black" />
+
+
+            <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+                android:id="@+id/address"
+                style="@style/Gotham_Book"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:maxLines="1"
+                android:text="address of place"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </LinearLayout>
+
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:background="@color/parent_list_item_color"
         android:gravity="center"
         android:orientation="horizontal"
+        android:visibility="visible"
         android:weightSum="1">
 
         <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
@@ -28,15 +87,15 @@
             android:layout_width="0dp"
             android:layout_height="15dp"
             android:layout_gravity="center"
+            android:layout_weight="0.06"
             android:gravity="center"
-            android:visibility="visible"
-            android:layout_weight="0.06">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/group_image"
                 android:layout_width="10dp"
-                android:layout_gravity="center"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:src="@drawable/down_arrow" />
         </LinearLayout>
 

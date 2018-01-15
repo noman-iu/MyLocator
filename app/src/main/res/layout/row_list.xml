@@ -30,18 +30,35 @@
             android:text="name of place"
             android:textColor="@color/black"
             android:textStyle="bold" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+        android:id="@+id/rating"
+        style="@style/Gotham_Light"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:maxLines="1"
+        android:text="Rating"
+        android:textColor="@color/black" />
 
-        <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
-            android:id="@+id/rating"
-            style="@style/Gotham_Light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:maxLines="1"
-            android:text="Rating"
-            android:textColor="@color/black" />
+    <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
+        android:id="@+id/distance"
+        style="@style/Gotham_Light"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textAlignment="textEnd"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:maxLines="1"
+        android:text="Distance"
+        android:textColor="@color/black" />
 
+</LinearLayout>
 
         <com.example.shadabazamfarooqui.mylocator.utils.BuzzTextView
             android:id="@+id/address"
@@ -50,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:maxLines="1"
             android:text="address of place"
             android:textColor="@color/black" />
     </LinearLayout>

@@ -8,15 +8,18 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.shadabazamfarooqui.mylocator.R;
+import com.example.shadabazamfarooqui.mylocator.activity.HomeActivity;
 import com.example.shadabazamfarooqui.mylocator.network.request.GetRequest;
+import com.example.shadabazamfarooqui.mylocator.utils.DistanceCalculation;
 
 public class MosqueExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private GetRequest listParent;
 
-    public MosqueExpandableListAdapter(Context context, GetRequest  listHeaderName) {
+    public MosqueExpandableListAdapter(Context context, GetRequest listHeaderName) {
         this._context = context;
         this.listParent = listHeaderName;
     }
@@ -39,10 +42,14 @@ public class MosqueExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.child_layout, null);
         }
-        TextView txtListChild = (TextView) convertView.findViewById(R.id.address);
-        txtListChild.setText(listParent.getResults().get(groupPosition).getVicinity());
-
-
+        TextView address = (TextView) convertView.findViewById(R.id.address);
+        TextView distance = (TextView) convertView.findViewById(R.id.distance);
+        Double distanceDouble = (DistanceCalculation.getDistance(DistanceCalculation.lat1, DistanceCalculation.long1, listParent.getResults().get(groupPosition).getGeometry().getLocation().getLat(), listParent.getResults().get(groupPosition).getGeometry().getLocation().getLng())) / 1000;
+        String distanceString = String.valueOf(distanceDouble);
+        int index = distanceString.indexOf(".");
+        String printDistance = distanceString.substring(0, (index + 3));
+        address.setText(listParent.getResults().get(groupPosition).getVicinity());
+        distance.setText("Distance " + printDistance);
         return convertView;
     }
 
@@ -77,11 +84,10 @@ public class MosqueExpandableListAdapter extends BaseExpandableListAdapter {
         TextView groupName = (TextView) convertView.findViewById(R.id.group_name);
         groupName.setTypeface(null, Typeface.BOLD);
         groupName.setText(headerTitle);
-        ImageView imageview=(ImageView)convertView.findViewById(R.id.group_image);
-        if(isExpanded){
+        ImageView imageview = (ImageView) convertView.findViewById(R.id.group_image);
+        if (isExpanded) {
             imageview.setImageResource(R.drawable.up_arrow);
-        }
-        else{
+        } else {
             imageview.setImageResource(R.drawable.down_arrow);
         }
         return convertView;
