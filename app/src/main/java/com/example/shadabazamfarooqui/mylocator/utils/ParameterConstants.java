@@ -7,5 +7,5 @@ package com.example.shadabazamfarooqui.mylocator.utils;
 public class ParameterConstants {
 
     public static String USERS="Users";
-    public static String MOSQUE="Mosque";
+    public static String MOSQUE="Pending_mosque_request";
 }
