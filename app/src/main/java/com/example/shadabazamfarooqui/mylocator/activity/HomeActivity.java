@@ -56,7 +56,7 @@ public class HomeActivity extends Navigation {
     LinearLayout moreLayout;
     @Bind(R.id.moreList)
     ListView moreList;
-    private Boolean boolForMenu = true;
+
     public static Context context;
     boolean doubleBackToExitPressedOnce = false;
 
@@ -70,14 +70,14 @@ public class HomeActivity extends Navigation {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         context = this;
-        if (Networking.isNetworkAvailable(this)){
-            progressDialog=new ProgressDialog(this);
+        if (Networking.isNetworkAvailable(this)) {
+            progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Loading...");
             checkGps(this);
-            Map.boolForMapList=true;
+            Map.boolForMapList = true;
             onCreateNavigation();
             onCreateMap(mosqueList);
-        }else {
+        } else {
 //            Snackbar.make(coordinatorLayout,"Check your internet connection",Snackbar.LENGTH_LONG).show();
             Toast.makeText(context, "Check your internet connection", Toast.LENGTH_LONG).show();
         }
@@ -97,25 +97,13 @@ public class HomeActivity extends Navigation {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_mosue) {
-            if (boolForMenu) {
-                Intent intent=new Intent(getApplicationContext(), AddMosqueActivity.class);
-                startActivity(intent);
-//                mapLayout.setVisibility(View.GONE);
-//                listLayout.setVisibility(View.VISIBLE);
-//                item.setTitle("Map");
-//                boolForMenu = false;
-
-            } else {
-                mapLayout.setVisibility(View.VISIBLE);
-                listLayout.setVisibility(View.GONE);
-//                item.setTitle("List");
-                boolForMenu = true;
-            }
+            Intent intent = new Intent(getApplicationContext(), AddMosqueActivity.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.action_refresh) {
             checkGps(this);
-            Map.boolForMapList=true;
+            Map.boolForMapList = true;
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -132,14 +120,12 @@ public class HomeActivity extends Navigation {
                     listLayout.setVisibility(View.GONE);
                     qiblaLayout.setVisibility(View.GONE);
                     moreLayout.setVisibility(View.GONE);
-                    boolForMenu = true;
                     return true;
                 case R.id.navigation_list:
                     mapLayout.setVisibility(View.GONE);
                     listLayout.setVisibility(View.VISIBLE);
                     qiblaLayout.setVisibility(View.GONE);
                     moreLayout.setVisibility(View.GONE);
-                    boolForMenu = false;
                     return true;
                /* case R.id.navigation_add_mosque:
                     Intent intent=new Intent(getApplicationContext(), AddMosqueActivity.class);
@@ -183,9 +169,9 @@ public class HomeActivity extends Navigation {
         }, 2000);
     }
 
-    private void moreListContent(){
-        listName=new ArrayList<>();
-        listImage=new ArrayList<>();
+    private void moreListContent() {
+        listName = new ArrayList<>();
+        listImage = new ArrayList<>();
 
         listName.add("Abc");
         listName.add("Abc");
@@ -221,7 +207,7 @@ public class HomeActivity extends Navigation {
         listImage.add(R.drawable.about_us_icon);
         listImage.add(R.drawable.about_us_icon);
 
-        moreList.setAdapter(new MoreListAdapter(getApplicationContext(),listName,listImage));
+        moreList.setAdapter(new MoreListAdapter(getApplicationContext(), listName, listImage));
 
     }
 }
