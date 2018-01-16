@@ -32,6 +32,7 @@ import com.example.shadabazamfarooqui.mylocator.R;
 import com.example.shadabazamfarooqui.mylocator.bean.MosqueRequestBean;
 import com.example.shadabazamfarooqui.mylocator.bean.ReferenceWrapper;
 import com.example.shadabazamfarooqui.mylocator.bean.UserBean;
+import com.example.shadabazamfarooqui.mylocator.local_db.DatabaseHandler;
 import com.example.shadabazamfarooqui.mylocator.utils.CustomeTittle;
 import com.example.shadabazamfarooqui.mylocator.utils.Networking;
 import com.example.shadabazamfarooqui.mylocator.utils.ParameterConstants;
@@ -119,7 +120,8 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                 progressDialog.show();
                 UserBean userBean = ReferenceWrapper.getRefrenceWrapper(AddMosqueActivity.this).getUserBean();
                 Boolean check = Preferences.getInstance(AddMosqueActivity.this).getLogin();
-                if (check) {
+                Boolean isAlreadySignUp=new DatabaseHandler(getApplicationContext()).isAlreadyLoggedIn();
+                if (isAlreadySignUp) {
                     userBean = new UserBean();
                     userBean.setName(Preferences.getInstance(getApplicationContext()).getName());
                     userBean.setEmail(Preferences.getInstance(getApplicationContext()).getEmail());

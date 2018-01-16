@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shadabazamfarooqui.mylocator.R;
+import com.example.shadabazamfarooqui.mylocator.local_db.DatabaseHandler;
 import com.example.shadabazamfarooqui.mylocator.utils.Preferences;
 import com.example.shadabazamfarooqui.mylocator.validation.Validation;
 import com.example.shadabazamfarooqui.mylocator.bean.ReferenceWrapper;
@@ -175,7 +176,7 @@ public class SignUpActivity extends AppCompatActivity {
                         public void run() {
                             finish();
                         }
-                    },2000);
+                    }, 2000);
                 }
             }
 
@@ -203,7 +204,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                         Toast.makeText(SignUpActivity.this, "verification done line No :198", Toast.LENGTH_LONG).show();
-                       saveData();
+                        saveData();
                     }
 
                     @Override
@@ -250,27 +251,28 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    private void saveData(){
+    private void saveData() {
         databaseReference.child(mobile.getText().toString()).setValue(userBean, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError == null) {
                     progressDialog.dismiss();
                     Toast.makeText(SignUpActivity.this, "Verification done !", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                    DatabaseHandler databaseHandler = new DatabaseHandler(SignUpActivity.this);
+                    if (!databaseHandler.isAlreadyLoggedIn()) {
+                        databaseHandler.insertRecord(userBean);
+                    }
                     Preferences.getInstance(getApplicationContext()).setLogin(true);
                     Preferences.getInstance(getApplicationContext()).setName(userBean.getName());
                     Preferences.getInstance(getApplicationContext()).setEmail(userBean.getEmail());
                     Preferences.getInstance(getApplicationContext()).setMobile(userBean.getMobile());
                     Snackbar.make(coordinatorLayout, "Your have registered successfully", Snackbar.LENGTH_SHORT).show();
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             finish();
                         }
-                    },5000);
+                    }, 5000);
                     finish();
                 } else {
                     progressDialog.dismiss();
