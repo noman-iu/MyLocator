@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -46,6 +47,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
@@ -182,21 +184,11 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                     mosqueRequestBean.setMosqueName(mosque_name.getText().toString());
                     mosqueRequestBean.setMosqueAddress(mosque_address.getText().toString());
 
-                    if (bitmap1 != null) {
-                        mosqueRequestBean.setImage1(Conversion.toString(bitmap1));
-                    }
-                    if (bitmap2 != null) {
-                        mosqueRequestBean.setImage1(Conversion.toString(bitmap2));
-                    }
-                    if (bitmap3 != null) {
-                        mosqueRequestBean.setImage1(Conversion.toString(bitmap3));
-                    }
-                    if (bitmap4 != null) {
-                        mosqueRequestBean.setImage1(Conversion.toString(bitmap4));
-                    }
-                    if (bitmap5 != null) {
-                        mosqueRequestBean.setImage1(Conversion.toString(bitmap5));
-                    }
+                    mosqueRequestBean.setImage1(Conversion.toString(bitmap1));
+                    mosqueRequestBean.setImage2(Conversion.toString(bitmap2));
+                    mosqueRequestBean.setImage3(Conversion.toString(bitmap3));
+                    mosqueRequestBean.setImage4(Conversion.toString(bitmap4));
+                    mosqueRequestBean.setImage5(Conversion.toString(bitmap5));
                     mosqueRequestBean.setLatLong(latLng);
 
                     databaseReference = FirebaseDatabase.getInstance().getReference(ParameterConstants.MOSQUE);
@@ -440,5 +432,15 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                     });
             snackbar.show();
         }
+    }
+
+    public String toString(Bitmap bmp) {
+
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, bao); // bmp is bitmap from user image file
+        bmp.recycle();
+        byte[] byteArray = bao.toByteArray();
+        String imageB64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return imageB64;
     }
 }
