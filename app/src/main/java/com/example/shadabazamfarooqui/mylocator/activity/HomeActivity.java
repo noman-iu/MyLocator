@@ -3,16 +3,23 @@ package com.example.shadabazamfarooqui.mylocator.activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shadabazamfarooqui.mylocator.R;
@@ -41,9 +48,6 @@ import butterknife.ButterKnife;
 import retrofit2.Response;
 
 public class HomeActivity extends Navigation {
-
-    /*@Bind(R.id.coordinatorLayout)
-    CoordinatorLayout coordinatorLayout;*/
     @Bind(R.id.mapLayout)
     LinearLayout mapLayout;
     @Bind(R.id.listLayout)
@@ -56,10 +60,8 @@ public class HomeActivity extends Navigation {
     LinearLayout moreLayout;
     @Bind(R.id.moreList)
     ListView moreList;
-
     public static Context context;
     boolean doubleBackToExitPressedOnce = false;
-
     List<String> listName;
     List<Integer> listImage;
 
@@ -68,34 +70,53 @@ public class HomeActivity extends Navigation {
         super.onCreate(savedInstanceState);
         //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         setContentView(R.layout.activity_home);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         context = this;
+        initActionbar("Mosque Locator");
+//        onCreateNavigation(toolbar);
         if (Networking.isNetworkAvailable(this)) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Loading...");
             checkGps(this);
             Map.boolForMapList = true;
-            onCreateNavigation();
             onCreateMap(mosqueList);
         } else {
-//            Snackbar.make(coordinatorLayout,"Check your internet connection",Snackbar.LENGTH_LONG).show();
             Toast.makeText(context, "Check your internet connection", Toast.LENGTH_LONG).show();
         }
-
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         BottomNavigationViewHelper.disableShiftMode(navigation);
+    }
+    private void initActionbar(String tittleText) {
+        ActionBar actionBar = getSupportActionBar();
+        View viewActionBar = getLayoutInflater().inflate(R.layout.action_bar_tittle_text_layout, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#009DE0")));
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(viewActionBar, params);
+        TextView actionbarTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        actionbarTitle.setText(tittleText);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setHomeButtonEnabled(false);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_mosue) {
             Intent intent = new Intent(getApplicationContext(), AddMosqueActivity.class);
             startActivity(intent);
@@ -127,10 +148,6 @@ public class HomeActivity extends Navigation {
                     qiblaLayout.setVisibility(View.GONE);
                     moreLayout.setVisibility(View.GONE);
                     return true;
-               /* case R.id.navigation_add_mosque:
-                    Intent intent=new Intent(getApplicationContext(), AddMosqueActivity.class);
-                    startActivity(intent);
-                    return true;*/
                 case R.id.navigation_qibla:
                     mapLayout.setVisibility(View.GONE);
                     listLayout.setVisibility(View.GONE);
@@ -190,24 +207,22 @@ public class HomeActivity extends Navigation {
         listName.add("Abc");
         listName.add("Abc");
 
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-        listImage.add(R.drawable.about_us_icon);
-
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
+        listImage.add(R.drawable.anim_message_icon);
         moreList.setAdapter(new MoreListAdapter(getApplicationContext(), listName, listImage));
-
     }
 }

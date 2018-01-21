@@ -129,7 +129,7 @@
     <color name="guide">#AA86C166</color>
 
     <color name="black_overlay">#66000000</color>
-    <color name="parent_list_item_color">#e2e2e2</color>
+    <color name="parent_list_item_color">#eeeeee</color>
 
     <color name="bright_pink">#FF007F</color>
     <color name="rred">#FF0000</color>

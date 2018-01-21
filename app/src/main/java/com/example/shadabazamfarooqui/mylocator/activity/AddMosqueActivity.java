@@ -6,8 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,16 +15,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shadabazamfarooqui.mylocator.R;
@@ -33,6 +29,7 @@ import com.example.shadabazamfarooqui.mylocator.bean.MosqueRequestBean;
 import com.example.shadabazamfarooqui.mylocator.bean.ReferenceWrapper;
 import com.example.shadabazamfarooqui.mylocator.bean.UserBean;
 import com.example.shadabazamfarooqui.mylocator.local_db.DatabaseHandler;
+import com.example.shadabazamfarooqui.mylocator.utils.Conversion;
 import com.example.shadabazamfarooqui.mylocator.utils.CustomeTittle;
 import com.example.shadabazamfarooqui.mylocator.utils.Networking;
 import com.example.shadabazamfarooqui.mylocator.utils.ParameterConstants;
@@ -59,10 +56,36 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
 
     int PLACE_PICKER_REQUEST = 1;
     GoogleApiClient mGoogleApiClient;
-    private static final int CAMERA_REQUEST = 1888;
-    private static final int GALLERY_REQUEST = 4565;
-
-    ImageView photoIcon;
+    private static final int IMAGE_1_CAMERA_REQUEST = 11;
+    private static final int IMAGE_1_GALLERY_REQUEST = 12;
+    private static final int IMAGE_2_CAMERA_REQUEST = 21;
+    private static final int IMAGE_2_GALLERY_REQUEST = 22;
+    private static final int IMAGE_3_CAMERA_REQUEST = 31;
+    private static final int IMAGE_3_GALLERY_REQUEST = 32;
+    private static final int IMAGE_4_CAMERA_REQUEST = 41;
+    private static final int IMAGE_4_GALLERY_REQUEST = 42;
+    private static final int IMAGE_5_CAMERA_REQUEST = 51;
+    private static final int IMAGE_5_GALLERY_REQUEST = 52;
+    @Bind(R.id.image_1_layout)
+    LinearLayout image_1_layout;
+    @Bind(R.id.image_2_layout)
+    LinearLayout image_2_layout;
+    @Bind(R.id.image_3_layout)
+    LinearLayout image_3_layout;
+    @Bind(R.id.image_4_layout)
+    LinearLayout image_4_layout;
+    @Bind(R.id.image_5_layout)
+    LinearLayout image_5_layout;
+    @Bind(R.id.image1)
+    ImageView image1;
+    @Bind(R.id.image2)
+    ImageView image2;
+    @Bind(R.id.image3)
+    ImageView image3;
+    @Bind(R.id.image4)
+    ImageView image4;
+    @Bind(R.id.image5)
+    ImageView image5;
     @Bind(R.id.mosque_name)
     EditText mosque_name;
     @Bind(R.id.mosque_address)
@@ -75,7 +98,7 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
     ProgressDialog progressDialog;
     LatLng latLng;
     Snackbar snackbar;
-
+    Bitmap bitmap1, bitmap2, bitmap3, bitmap4, bitmap5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,14 +127,42 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
             e.printStackTrace();
         }
 
-        photoIcon = (ImageView) this.findViewById(R.id.camraIcon);
-        photoIcon.setOnClickListener(new View.OnClickListener() {
+        image_1_layout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                dialog();
+                dialog(IMAGE_1_CAMERA_REQUEST, IMAGE_1_GALLERY_REQUEST);
             }
         });
+        image_2_layout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog(IMAGE_2_CAMERA_REQUEST, IMAGE_2_GALLERY_REQUEST);
+            }
+        });
+        image_3_layout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog(IMAGE_3_CAMERA_REQUEST, IMAGE_3_GALLERY_REQUEST);
+            }
+        });
+        image_4_layout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog(IMAGE_4_CAMERA_REQUEST, IMAGE_4_GALLERY_REQUEST);
+            }
+        });
+        image_5_layout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog(IMAGE_5_CAMERA_REQUEST, IMAGE_5_GALLERY_REQUEST);
+            }
+        });
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +171,7 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                 progressDialog.show();
                 UserBean userBean = ReferenceWrapper.getRefrenceWrapper(AddMosqueActivity.this).getUserBean();
                 Boolean check = Preferences.getInstance(AddMosqueActivity.this).getLogin();
-                Boolean isAlreadySignUp=new DatabaseHandler(getApplicationContext()).isAlreadyLoggedIn();
+                Boolean isAlreadySignUp = new DatabaseHandler(getApplicationContext()).isAlreadyLoggedIn();
                 if (isAlreadySignUp) {
                     userBean = new UserBean();
                     userBean.setName(Preferences.getInstance(getApplicationContext()).getName());
@@ -130,7 +181,24 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                     mosqueRequestBean.setBean(userBean);
                     mosqueRequestBean.setMosqueName(mosque_name.getText().toString());
                     mosqueRequestBean.setMosqueAddress(mosque_address.getText().toString());
+
+                    if (bitmap1 != null) {
+                        mosqueRequestBean.setImage1(Conversion.toString(bitmap1));
+                    }
+                    if (bitmap2 != null) {
+                        mosqueRequestBean.setImage1(Conversion.toString(bitmap2));
+                    }
+                    if (bitmap3 != null) {
+                        mosqueRequestBean.setImage1(Conversion.toString(bitmap3));
+                    }
+                    if (bitmap4 != null) {
+                        mosqueRequestBean.setImage1(Conversion.toString(bitmap4));
+                    }
+                    if (bitmap5 != null) {
+                        mosqueRequestBean.setImage1(Conversion.toString(bitmap5));
+                    }
                     mosqueRequestBean.setLatLong(latLng);
+
                     databaseReference = FirebaseDatabase.getInstance().getReference(ParameterConstants.MOSQUE);
                     Date today = new Date();
                     long id = today.getTime();
@@ -163,7 +231,7 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
     }
 
 
-    void dialog() {
+    void dialog(final int requestFirst, final int requestSecond) {
         final CharSequence[] items = {"Camera", "Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(AddMosqueActivity.this);
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -171,11 +239,11 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    startActivityForResult(cameraIntent, requestFirst);
                 } else if (item == 1) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
-                    startActivityForResult(Intent.createChooser(intent, "Select File"), GALLERY_REQUEST);
+                    startActivityForResult(Intent.createChooser(intent, "Select File"), requestSecond);
                 }
             }
 
@@ -194,29 +262,114 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-
-            LayoutParams params = photoIcon.getLayoutParams();
+        if (requestCode == IMAGE_1_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            LayoutParams params = image1.getLayoutParams();
             params.height = LayoutParams.MATCH_PARENT;
-            //params.width = Utils.getScreenWidth();
-
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             lp.setMargins(0, 0, 0, 0);
-            photoIcon.setLayoutParams(lp);
-
+            image1.setLayoutParams(lp);
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-            photoIcon.setImageBitmap(photo);
-            //photoIcon.setImageBitmap(Bitmap.createScaledBitmap(photo, Utils.getScreenWidth(), Utils.getPercentageScreenWidth(35), false));
-
-            //Log.i("mytag","Enddd:"+Utils.getPercentageScreenWidth(35) +"   "+Utils.getScreenWidth());
+            image1.setImageBitmap(photo);
+            bitmap1 = photo;
         }
-        if (requestCode == GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
+        if (requestCode == IMAGE_1_GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getData();
+            try {
+                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                image1.setImageBitmap(bm);
+                bitmap1 = bm;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        if (requestCode == IMAGE_2_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            LayoutParams params = image2.getLayoutParams();
+            params.height = LayoutParams.MATCH_PARENT;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            lp.setMargins(0, 0, 0, 0);
+            image2.setLayoutParams(lp);
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            image2.setImageBitmap(photo);
+            bitmap2 = photo;
+        }
+        if (requestCode == IMAGE_2_GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getData();
+            try {
+                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                image2.setImageBitmap(bm);
+                bitmap2 = bm;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (requestCode == IMAGE_3_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            LayoutParams params = image3.getLayoutParams();
+            params.height = LayoutParams.MATCH_PARENT;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            lp.setMargins(0, 0, 0, 0);
+            image3.setLayoutParams(lp);
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            image3.setImageBitmap(photo);
+            bitmap3 = photo;
+        }
+        if (requestCode == IMAGE_3_GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
 
             Uri uri = data.getData();
             try {
                 Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                image3.setImageBitmap(bm);
+                bitmap3 = bm;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-                photoIcon.setImageBitmap(bm);
+
+        if (requestCode == IMAGE_4_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+
+            LayoutParams params = image4.getLayoutParams();
+            params.height = LayoutParams.MATCH_PARENT;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            lp.setMargins(0, 0, 0, 0);
+            image4.setLayoutParams(lp);
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            image4.setImageBitmap(photo);
+            bitmap4 = photo;
+        }
+
+        if (requestCode == IMAGE_4_GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
+
+            Uri uri = data.getData();
+            try {
+                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                image4.setImageBitmap(bm);
+                bitmap4 = bm;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if (requestCode == IMAGE_5_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            LayoutParams params = image5.getLayoutParams();
+            params.height = LayoutParams.MATCH_PARENT;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            lp.setMargins(0, 0, 0, 0);
+            image5.setLayoutParams(lp);
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            image5.setImageBitmap(photo);
+            bitmap5 = photo;
+        }
+
+        if (requestCode == IMAGE_5_GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getData();
+            try {
+                Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                image5.setImageBitmap(bm);
+                bitmap5 = bm;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -228,11 +381,8 @@ public class AddMosqueActivity extends AppCompatActivity implements GoogleApiCli
                 final Place place = PlacePicker.getPlace(data, this);
                 String toastMsg = String.format("Place: %s", place.getName());
                 Log.i("info", "Place ID:" + place.getId() + " Name :" + place.getName() + " Type :" + place.getPlaceTypes() + " Long :" + place.getLatLng() + " Locale :" + place.getLocale());
-                //Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                 latLng = place.getLatLng();
                 mosque_address.setText("" + place.getAddress());
-
-
             }
 
         }

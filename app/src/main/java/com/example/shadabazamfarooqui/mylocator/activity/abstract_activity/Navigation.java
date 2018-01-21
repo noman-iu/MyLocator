@@ -24,9 +24,7 @@ import com.example.shadabazamfarooqui.mylocator.activity.DummyActivity;
 public class Navigation extends Map implements NavigationView.OnNavigationItemSelectedListener{
 
 
-    public void onCreateNavigation(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public void onCreateNavigation(Toolbar toolbar){
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,13 +52,6 @@ public class Navigation extends Map implements NavigationView.OnNavigationItemSe
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
     }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

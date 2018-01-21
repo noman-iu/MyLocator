@@ -94,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
 
-        initActionbar();
+        initActionbar("SIGN UP PAGE");
         referenceWrapper = ReferenceWrapper.getRefrenceWrapper(this);
         databaseReference = FirebaseDatabase.getInstance().getReference(ParameterConstants.USERS);
         progressDialog = new ProgressDialog(this);
@@ -120,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void initActionbar() {
+    private void initActionbar(String tittleText) {
         ActionBar actionBar = getSupportActionBar();
         View viewActionBar = getLayoutInflater().inflate(R.layout.action_bar_tittle_text_layout, null);
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
@@ -132,7 +132,7 @@ public class SignUpActivity extends AppCompatActivity {
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setCustomView(viewActionBar, params);
         TextView actionbarTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
-        actionbarTitle.setText("SIGN UP PAGE");
+        actionbarTitle.setText(tittleText);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -233,7 +233,6 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
